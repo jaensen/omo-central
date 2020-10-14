@@ -1,0 +1,98 @@
+version: '3'
+
+services:
+
+  postgres:
+    build: postgres
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+
+  auth:
+    depends_on:
+      - postgres
+    build:
+      context: ../auth
+      dockerfile: ""
+    env_file:
+      - .env
+    environment:
+      # Sucks: The hash is a comment in .env-files, so this variable must be set
+      # inside of this file.
+      - AUTH_APP_REDIRECT=http://omo.local:5000/#!/sign-in/onetime
+    ports:
+      - "80"
+
+  identity:
+    depends_on:
+      - postgres
+      - auth
+    build:
+      context: ../
+      dockerfile: ""
+    env_file:
+      - .env
+    ports:
+      - "80"
+
+#  app:
+#    depends_on:
+#      - postgres
+#      - auth
+#      - identity
+#    build:
+#      context: ../app
+#      dockerfile: ../omo.local/app/Dockerfile
+#      args:
+#        - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+#        - PROXY_EXTERN_DOMAIN=${PROXY_EXTERN_DOMAIN}
+#        - PROXY_EXTERN_PORT=${PROXY_EXTERN_PORT}
+#    env_file:
+#      - .env
+#    ports:
+#      - "80"
+
+  static:
+    build: static
+    ports:
+      - "80"
+
+  proxy:
+    depends_on:
+      - static
+      - auth
+      - identity
+      #- app
+    build:
+      context: proxy
+      dockerfile: Dockerfile
+      args:
+        - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+        - PROXY_DOMAIN=${PROXY_DOMAIN}
+        - PROXY_PORT=${PROXY_PORT}
+        - PROXY_EXTERN_DOMAIN=${PROXY_EXTERN_DOMAIN}
+        - PROXY_EXTERN_PORT=${PROXY_EXTERN_PORT}
+        - PROXY_SERVICE_STATIC_PATH=${PROXY_SERVICE_STATIC_PATH}
+        - PROXY_SERVICE_AUTH_PATH=${PROXY_SERVICE_AUTH_PATH}
+        - PROXY_SERVICE_IDENTITY_PATH=${PROXY_SERVICE_IDENTITY_PATH}
+        - PROXY_SERVICE_SAFE_PATH=${PROXY_SERVICE_SAFE_PATH}
+        - PROXY_SERVICE_APP_PATH=${PROXY_SERVICE_APP_PATH}
+        - PROXY_SERVICE_MARKETPLACE_PATH=${PROXY_SERVICE_MARKETPLACE_PATH}
+        - STATIC_PROTOCOL=${STATIC_PROTOCOL}
+        - STATIC_DOMAIN=${STATIC_DOMAIN}
+        - STATIC_PORT=${STATIC_PORT}
+        - APP_PROTOCOL=${APP_PROTOCOL}
+        - APP_DOMAIN=${APP_DOMAIN}
+        - APP_PORT=${APP_PORT}
+        - AUTH_PROTOCOL=${AUTH_PROTOCOL}
+        - AUTH_DOMAIN=${AUTH_DOMAIN}
+        - AUTH_PORT=${AUTH_PORT}
+        - IDENTITY_PROTOCOL=${IDENTITY_PROTOCOL}
+        - IDENTITY_DOMAIN=${IDENTITY_DOMAIN}
+        - IDENTITY_PORT=${IDENTITY_PORT}
+    env_file:
+      - .env
+
+    ports:
+      - "8080:80"

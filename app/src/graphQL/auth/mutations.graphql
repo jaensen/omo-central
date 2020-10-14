@@ -1,0 +1,21 @@
+mutation LoginWithEmail($appId:String!, $emailAddress:String!) {
+    loginWithEmail(appId: $appId, emailAddress: $emailAddress) {
+        success
+        errorMessage
+    }
+}
+
+mutation LoginWithPublicKey($appId:String!, $publicKey:String!) {
+    loginWithPublicKey(appId: $appId, publicKey: $publicKey) {
+        success
+        errorMessage
+    }
+}
+
+mutation Verify($oneTimeToken:String!) {
+    verify(oneTimeToken: $oneTimeToken) {
+        success
+        errorMessage
+        jwt
+    }
+}

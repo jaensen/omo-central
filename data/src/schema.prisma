@@ -1,0 +1,60 @@
+datasource db {
+    provider = "postgresql"
+    url      = "postgresql://postgres:postgres@localhost:5432/omo-data?schema=public"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+// An agent is an entity that is entitled to act as a person (a device or bot).
+model Agent {
+  // A link to the Identit that this agent represents.
+  identity Identity  @relation(fields: [identityId], references: [identityId])
+  identityId String
+  // Contains the key that can be used to decrypt the Identity's 'privateData' field.
+  // When the Agent's 'type' is 'publicKey' then the 'identityKey' will be encrypted
+  // with the Agent's 'publicKey'.
+  // When the 'type' is 'email' then the field contains the private key in plain-text.
+  identityKey String
+  // The type can either be 'email' or 'publicKey'.
+  type String
+  // Depending on the 'type', this field either contains a email address or a public key.
+  key String
+  @@unique([type, key], name: "UX_Agent_Type_Key")
+}
+
+model Identity {
+  // a unique identity string that is derived from the 'identityKey' via PBKDF2 with SHA3.
+  identityId String @id
+  // The agents that should be able to act as this identity.
+  agents Agent[]
+  // Contains data that should be publicy available for everyone.
+  publicData Json
+  // Contains data that is encrypted with the 'identityId'.
+  privateData String
+  // The 'initializationVector' that was used to encrypt the 'privateData'.
+  initializationVector String
+}
+
+// Authorities are trusted services that issue JWTs which this service accepts as authentication
+model Authority {
+  id Int @default(autoincrement()) @id
+  issuer String
+  appId String
+}
+
+model Session {
+  // The session id is a unique random id.
+  sessionId String @unique
+  // Which Authoritity issued the JWT that lead to this session?
+  issuedBy Authority
+  // When the session was created.
+  createdAt DateTime
+  // Usually the session ends when the user closes the browser window/tab (session-cookie)
+  // but there is also a fixed max. session length.
+  // This fields specifies the max. session lifetime in seconds.
+  maxLifetime Int
+  // Who is identified by the session?
+  agent Agent
+}

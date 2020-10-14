@@ -1,0 +1,37 @@
+datasource db {
+    provider = "postgresql"
+    url      = "postgresql://postgres:postgres@localhost:5432/omo-auth?schema=public"
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model Apps {
+  id Int @default(autoincrement()) @id
+  appId String @unique
+  originHeaderValue String
+  validFrom DateTime
+  validTo DateTime?
+}
+
+model Challenges {
+  id Int @default(autoincrement()) @id
+  validTo DateTime
+  type String
+  key String
+  appId String
+  challenge String
+  @@unique([type, key, challenge], name: "UX_Challenges_Type_Key_Challenge")
+  done Boolean
+}
+
+model SigningKeyPairs {
+  id Int @default(autoincrement()) @id
+  validFrom DateTime
+  validTo DateTime
+  privateKeyPem String
+  publicKeyPem String
+  privateKeyJwk String
+  publicKeyJwk String
+}

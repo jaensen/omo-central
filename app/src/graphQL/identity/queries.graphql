@@ -1,0 +1,18 @@
+query identityId {
+    identityId
+}
+
+query identityKey {
+    identityKey
+}
+
+query privateData {
+    privateData {
+        initializationVector
+        data
+    }
+}
+
+query publicData($identityId:String) {
+    publicData(identityId: $identityId)
+}

@@ -1,0 +1,20 @@
+mutation ExchangeToken($jwt:String!) {
+    exchangeToken(jwt: $jwt) {
+        success
+        errorMessage
+    }
+}
+
+mutation setPublicData($data:Json!) {
+    setPublicData(data:$data) {
+        success
+        errorMessage
+    }
+}
+
+mutation setPrivateData($initializationVector:String! $data:String!) {
+    setPrivateData(initializationVector:$initializationVector data:$data) {
+        success
+        errorMessage
+    }
+}

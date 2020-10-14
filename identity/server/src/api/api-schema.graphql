@@ -1,0 +1,62 @@
+scalar Json
+
+type Mutation {
+    # Exchanges a JWT for a session cookie which will be read by all subsequent mutation- and query-calls.
+    # When a User exchanges a token for the first time, a Agent and Identity will be created.
+    exchangeToken(jwt:String!) : ExchangeTokenResponse!
+
+    setPublicData(data:Json) : SetPublicDataResponse!
+    setPrivateData(initializationVector:String! data:String!) : SetPrivateDataResponse!
+}
+
+type Query {
+    version : Version
+
+    # Gets the public data of an identity. If no identityId was passed, the query returns the own public data.
+    publicData(identityId:String) : Json
+
+    # Gets the private data that is associated with the Identity
+    privateData : PrivateData!
+
+    # Gets the symetric key that is used to store the 'privateData' of the identity.
+    identityKey: String!
+
+    # Gets a unique identity string that is derived from the 'identityKey' via PBKDF2 with SHA3.
+    identityId: String!
+
+    # Gets the identity private key of the currently logged-on agent.
+    # Depending on the agent type, this key is encrypted or not.
+    # identityKey : String!
+    # identityId: String!
+}
+
+interface ActionResponse {
+    success: Boolean!
+    errorMessage: String
+}
+
+type PrivateData {
+    initializationVector: String!
+    data: String!
+}
+
+type ExchangeTokenResponse implements ActionResponse {
+    success: Boolean!
+    errorMessage: String
+}
+
+type SetPublicDataResponse implements ActionResponse {
+    success: Boolean!
+    errorMessage: String
+}
+
+type SetPrivateDataResponse implements ActionResponse {
+    success: Boolean!
+    errorMessage: String
+}
+
+type Version {
+    major: Int!
+    minor: Int!
+    revision: Int!
+}

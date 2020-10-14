@@ -1,0 +1,7 @@
+query Keys($kid:String!) {
+    keys(kid: $kid) {
+        id
+        publicKey
+        validTo
+    }
+}
