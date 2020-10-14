@@ -1,4 +1,4 @@
-CREATE DATABASE "omo-auth";
+--CREATE DATABASE "omo-auth";
 \c "omo-auth";
 
 create table "_Migration"
@@ -77,7 +77,7 @@ alter table "SigningKeyPairs"
 INSERT INTO "Apps" ("appId", "originHeaderValue", "validFrom", "validTo")
 VALUES ('1', 'http://omo.local:8080', '2020-01-01', null);
 
---CREATE DATABASE "omo-data";
+CREATE DATABASE "omo-data";
 \c "omo-data";
 
 create table "_Migration"

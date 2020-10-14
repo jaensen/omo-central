@@ -14,7 +14,7 @@ services:
       - postgres
     build:
       context: ../auth
-      dockerfile: ""
+      dockerfile: ../docker.local/auth/Dockerfile
     env_file:
       - .env
     environment:
@@ -30,7 +30,7 @@ services:
       - auth
     build:
       context: ../
-      dockerfile: ""
+      dockerfile: docker.local/identity/Dockerfile
     env_file:
       - .env
     ports:
@@ -76,9 +76,7 @@ services:
         - PROXY_SERVICE_STATIC_PATH=${PROXY_SERVICE_STATIC_PATH}
         - PROXY_SERVICE_AUTH_PATH=${PROXY_SERVICE_AUTH_PATH}
         - PROXY_SERVICE_IDENTITY_PATH=${PROXY_SERVICE_IDENTITY_PATH}
-        - PROXY_SERVICE_SAFE_PATH=${PROXY_SERVICE_SAFE_PATH}
         - PROXY_SERVICE_APP_PATH=${PROXY_SERVICE_APP_PATH}
-        - PROXY_SERVICE_MARKETPLACE_PATH=${PROXY_SERVICE_MARKETPLACE_PATH}
         - STATIC_PROTOCOL=${STATIC_PROTOCOL}
         - STATIC_DOMAIN=${STATIC_DOMAIN}
         - STATIC_PORT=${STATIC_PORT}

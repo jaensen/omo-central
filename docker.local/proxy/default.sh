@@ -37,18 +37,6 @@ $SET_HEADER_BLOCK
     proxy_pass ${IDENTITY_PROTOCOL}${IDENTITY_DOMAIN}:${IDENTITY_PORT};
   }
 
-  location /${PROXY_SERVICE_SAFE_PATH} {
-    limit_req zone=zone2 burst=16 nodelay;
-$SET_HEADER_BLOCK
-    proxy_pass ${SAFE_PROTOCOL}${SAFE_DOMAIN}:${SAFE_PORT};
-  }
-
-  location /${PROXY_SERVICE_MARKETPLACE_PATH} {
-    limit_req zone=zone3 burst=25 nodelay;
-$SET_HEADER_BLOCK
-    proxy_pass ${MARKETPLACE_PROTOCOL}${MARKETPLACE_DOMAIN}:${MARKETPLACE_PORT};
-  }
-
 #  location /${PROXY_SERVICE_APP_PATH} {
 # SET_HEADER_BLOCK
 #    proxy_pass ${APP_PROTOCOL}${APP_DOMAIN}:${APP_PORT};
