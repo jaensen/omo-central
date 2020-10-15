@@ -37,10 +37,10 @@ $SET_HEADER_BLOCK
     proxy_pass ${IDENTITY_PROTOCOL}${IDENTITY_DOMAIN}:${IDENTITY_PORT};
   }
 
-#  location /${PROXY_SERVICE_APP_PATH} {
-# SET_HEADER_BLOCK
-#    proxy_pass ${APP_PROTOCOL}${APP_DOMAIN}:${APP_PORT};
-#  }
+  location /${PROXY_SERVICE_APP_PATH} {
+$SET_HEADER_BLOCK
+    proxy_pass ${APP_PROTOCOL}${APP_DOMAIN}:${APP_PORT};
+  }
 }
 EOF`
 echo "$TEMPLATE" > default.conf

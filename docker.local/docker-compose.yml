@@ -36,22 +36,22 @@ services:
     ports:
       - "80"
 
-#  app:
-#    depends_on:
-#      - postgres
-#      - auth
-#      - identity
-#    build:
-#      context: ../app
-#      dockerfile: ../omo.local/app/Dockerfile
-#      args:
-#        - PROXY_PROTOCOL=${PROXY_PROTOCOL}
-#        - PROXY_EXTERN_DOMAIN=${PROXY_EXTERN_DOMAIN}
-#        - PROXY_EXTERN_PORT=${PROXY_EXTERN_PORT}
-#    env_file:
-#      - .env
-#    ports:
-#      - "80"
+  app:
+    depends_on:
+      - postgres
+      - auth
+      - identity
+    build:
+      context: ../
+      dockerfile: docker.local/app/Dockerfile
+      args:
+        - PROXY_PROTOCOL=${PROXY_PROTOCOL}
+        - PROXY_EXTERN_DOMAIN=${PROXY_EXTERN_DOMAIN}
+        - PROXY_EXTERN_PORT=${PROXY_EXTERN_PORT}
+    env_file:
+      - .env
+    ports:
+      - "80"
 
   static:
     build: static
@@ -63,7 +63,7 @@ services:
       - static
       - auth
       - identity
-      #- app
+      - app
     build:
       context: proxy
       dockerfile: Dockerfile
