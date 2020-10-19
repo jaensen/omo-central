@@ -1,7 +1,7 @@
-import type {Trigger} from "../trigger/trigger";
+import type {Event} from "../events/event";
 
 export interface Action
 {
   name: string
-  action:(trigger:Trigger) => void
+  action:(trigger:Event) => void
 }

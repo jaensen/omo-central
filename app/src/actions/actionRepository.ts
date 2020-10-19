@@ -1,7 +1,7 @@
 import {Actions} from "./actions";
-import type {RequestMagicLoginLink} from "../trigger/auth/requestMagicLoginLink";
-import {ExchangeJwtForSessionCookie} from "../trigger/auth/exchangeJwtForSessionCookie";
-import type {ExchangeMagicLoginCodeForJwt} from "../trigger/auth/exchangeMagicLinkCodeForJwt";
+import type {RequestMagicLoginLink} from "../events/auth/requestMagicLoginLink";
+import {ExchangeJwtForSessionCookie} from "../events/auth/exchangeJwtForSessionCookie";
+import type {ExchangeMagicLoginCodeForJwt} from "../events/auth/exchangeMagicLinkCodeForJwt";
 import jwt_decode from "jwt-decode";
 import {authClient} from "../graphQL/auth/authClient";
 import {identityClient} from "../graphQL/identity/identityClient";
@@ -106,7 +106,7 @@ export const actionRepository = {
     console.log("JWT:", decodedJwt);
 
     localStorage.removeItem(jwtLocalStorageKey);
-    // window.trigger(new NavigateTo("To safe", "/safe"));
+    //window.trigger(new NavigateTo("To safe", "/profile"));
 
     alert("successfully logged in")
   }

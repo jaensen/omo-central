@@ -1,8 +1,7 @@
-import type {Trigger} from "../trigger";
+import type {Event} from "../event";
 import {Actions} from "../../actions/actions";
 
-export class RequestMagicLoginLink implements Trigger {
-  title: string = "Request magic login link";
+export class RequestMagicLoginLink implements Event {
   triggers: Actions = Actions.requestMagicLoginLink;
   emailAddress: string;
 

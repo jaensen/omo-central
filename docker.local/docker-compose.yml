@@ -20,7 +20,7 @@ services:
     environment:
       # Sucks: The hash is a comment in .env-files, so this variable must be set
       # inside of this file.
-      - AUTH_APP_REDIRECT=http://omo.local:5000/#!/sign-in/onetime
+      - AUTH_APP_REDIRECT=http://omo.local:8080/#!/sign-in/onetime
     ports:
       - "80"
 
@@ -48,6 +48,8 @@ services:
         - PROXY_PROTOCOL=${PROXY_PROTOCOL}
         - PROXY_EXTERN_DOMAIN=${PROXY_EXTERN_DOMAIN}
         - PROXY_EXTERN_PORT=${PROXY_EXTERN_PORT}
+        - PROXY_SERVICE_AUTH_PATH=${PROXY_SERVICE_AUTH_PATH}
+        - PROXY_SERVICE_IDENTITY_PATH=${PROXY_SERVICE_IDENTITY_PATH}
     env_file:
       - .env
     ports:
